@@ -12,7 +12,7 @@ const DateService = {
     let minutes;
     try {
       const response = await axios.get(url + city.label + ", " + city.location);
-      myDate = new Date(response.data.datetime);
+      myDate = new Date(response.data.datetime.replace(/\s/, "T"));
       if (myDate.getMinutes() < 10) {
         minutes = "0" + myDate.getMinutes();
       } else {
