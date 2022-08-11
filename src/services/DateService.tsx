@@ -9,10 +9,16 @@ const DateService = {
       API_KEY +
       "&location=";
     let myDate;
+    let minutes;
     try {
       const response = await axios.get(url + city.label + ", " + city.location);
       myDate = new Date(response.data.datetime);
-      return myDate.getHours() + ":" + myDate.getMinutes();
+      if (myDate.getMinutes() < 10) {
+        minutes = "0" + myDate.getMinutes();
+      } else {
+        minutes = myDate.getMinutes();
+      }
+      return myDate.getHours() + ":" + minutes;
     } catch (err) {
       console.log(err);
       return "";
