@@ -5,8 +5,7 @@ import Cities from "../../entities/navigation.json";
 import DateService from "../../services/DateService";
 
 function NavigationBar() {
-  let line: HTMLElement | null = document.getElementById("#key") as HTMLElement;
-
+  const [lineStyle, setLineStyle] = useState({ left: "0px", width: "0px" });
   const [cities, setCities] = useState<City[]>([]);
   const [selected, setSelected] = useState<number>(-1);
   const [date, setDate] = useState<String>("");
@@ -26,12 +25,10 @@ function NavigationBar() {
   }, []);
 
   const resize = async (e: any, id: number, city: City) => {
-    if (line) {
-      line.style.left = e.offsetLeft + "px";
-      line.style.width = e.offsetWidth + "px";
-      setSelected(id);
-      setDate(await DateService.callLocalTime(city));
-    }
+    setLineStyle({ left: e.offsetLeft + "px", width: e.offsetWidth + "px" });
+
+    setSelected(id);
+    setDate(await DateService.callLocalTime(city));
   };
 
   return (
@@ -45,7 +42,7 @@ function NavigationBar() {
         <div className="space" />
       )}
       <nav className="navigation__bar">
-        <div className="navigation__bar__line" id="#key"></div>
+        <div className="navigation__bar__line" style={lineStyle}></div>
         {listCities}
       </nav>
     </div>
