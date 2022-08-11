@@ -9,10 +9,13 @@ function NavigationBar() {
   const [cities, setCities] = useState<City[]>([]);
   const [selected, setSelected] = useState<number>(-1);
   const [date, setDate] = useState<String>("");
+  const [active, setActive] = useState<boolean>(true);
   const listCities = cities?.map((city: City, id: number) => (
     <div
       key={id}
-      className={`navigation__bar__button ${selected === id ? "selected" : ""}`}
+      className={`navigation__bar__button ${
+        selected === id ? "selected" : ""
+      } ${!active ? "events-none" : ""}`}
       onClick={(e) => {
         resize(e.target, id, city);
       }}
@@ -23,12 +26,14 @@ function NavigationBar() {
   useEffect(() => {
     setCities(JSON.parse(JSON.stringify(Cities.cities)));
   }, []);
-
   const resize = async (e: any, id: number, city: City) => {
     setLineStyle({ left: e.offsetLeft + "px", width: e.offsetWidth + "px" });
-
+    setActive(false);
     setSelected(id);
     setDate(await DateService.callLocalTime(city));
+    setTimeout(function () {
+      setActive(true);
+    }, 500);
   };
 
   return (
